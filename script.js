@@ -28,24 +28,24 @@ function spawnFood() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw the snake
+  // Vẽ snake (đầu màu sáng hơn)
   snake.forEach((part, i) => {
-    ctx.fillStyle = i === 0 ? 'lime' : 'green';
+    ctx.fillStyle = i === 0 ? '#00FF00' : '#008000';
     ctx.fillRect(part.x, part.y, box, box);
   });
 
-  // Draw food
+  // Vẽ food
   ctx.fillStyle = 'red';
   ctx.fillRect(food.x, food.y, box, box);
 
-  // Move the snake
+  // Di chuyển snake
   let head = { ...snake[0] };
   if (direction === 'LEFT') head.x -= box;
   if (direction === 'RIGHT') head.x += box;
   if (direction === 'UP') head.y -= box;
   if (direction === 'DOWN') head.y += box;
 
-  // Check collision
+  // Kiểm tra va chạm với tường hoặc thân
   if (
     head.x < 0 || head.x >= canvasSize ||
     head.y < 0 || head.y >= canvasSize ||
@@ -58,6 +58,7 @@ function draw() {
 
   snake.unshift(head);
 
+  // Nếu ăn được food
   if (head.x === food.x && head.y === food.y) {
     score++;
     document.getElementById("score").textContent = score;
@@ -67,4 +68,4 @@ function draw() {
   }
 }
 
-let game = setInterval(draw, 100);
+let game = setInterval(draw, 200); // chạy chậm hơn (200ms)
