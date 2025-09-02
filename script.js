@@ -38,9 +38,23 @@ function draw() {
     ctx.fillRect(part.x, part.y, box, box);
   });
 
-  // Vẽ food
-  ctx.fillStyle = 'red';
-  ctx.fillRect(food.x, food.y, box, box);
+  // Vẽ food bằng ảnh recall nhỏ
+const foodImg = new Image();
+foodImg.src = 'RECALL.png';
+
+foodImg.onload = function() {
+  // vẽ thức ăn mỗi lần draw sẽ load lại ảnh, để tối ưu có thể preload ảnh 1 lần ngoài draw
+};
+
+function draw() {
+  // ... đoạn code vẽ nền, vẽ snake ...
+
+  // Vẽ thức ăn bằng ảnh recall nhỏ (kích thước nhỏ hơn 1 chút)
+  ctx.drawImage(foodImg, food.x, food.y, box, box);
+
+  // ... phần di chuyển snake ...
+}
+
 
   // Di chuyển snake
   let head = { ...snake[0] };
@@ -76,3 +90,4 @@ function draw() {
 backgroundImage.onload = function() {
   game = setInterval(draw, 200);
 };
+
