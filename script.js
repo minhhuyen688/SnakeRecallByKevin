@@ -8,6 +8,9 @@ let direction = 'RIGHT';
 let food = spawnFood();
 let score = 0;
 
+const backgroundImage = new Image();
+backgroundImage.src = 'RECALL.png';
+
 document.addEventListener('keydown', changeDirection);
 
 function changeDirection(event) {
@@ -26,7 +29,8 @@ function spawnFood() {
 }
 
 function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Vẽ ảnh nền
+  ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
   // Vẽ snake (đầu màu sáng hơn)
   snake.forEach((part, i) => {
@@ -68,4 +72,7 @@ function draw() {
   }
 }
 
-let game = setInterval(draw, 200); // chạy chậm hơn (200ms)
+// Đợi ảnh nền load xong mới bắt đầu game
+backgroundImage.onload = function() {
+  game = setInterval(draw, 200);
+};
