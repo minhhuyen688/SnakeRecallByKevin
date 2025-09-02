@@ -38,19 +38,67 @@ function draw() {
     ctx.fillRect(part.x, part.y, box, box);
   });
 
-  // Vẽ food bằng ảnh recall nhỏ
+ const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+const box = 20;
+const canvasSize = 400;
+
+// Snake
+let snake = [];
+snake[0] = {x: 9 * box, y: 10 * box};
+
+let direction = null;
+
+// Food (thức ăn)
+let food = {
+  x: Math.floor(Math.random() * 19 + 1) * box,
+  y: Math.floor(Math.random() * 19 + 1) * box
+};
+
+// Load ảnh logo để làm thức ăn
 const foodImg = new Image();
 foodImg.src = 'RECALL.png';
 
-foodImg.onload = function() {
-  // vẽ thức ăn mỗi lần draw sẽ load lại ảnh, để tối ưu có thể preload ảnh 1 lần ngoài draw
-};
-
+// Hàm vẽ
 function draw() {
-  // ... đoạn code vẽ nền, vẽ snake ...
+  // Vẽ background đen và logo ở giữa
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0, canvasSize, canvasSize);
 
-  // Vẽ thức ăn bằng ảnh recall nhỏ (kích thước nhỏ hơn 1 chút)
-  ctx.drawImage(foodImg, food.x, food.y, box, box);
+  // Vẽ logo recall ở giữa canvas
+  // Ví dụ logo to 200x100 px
+  const logoWidth = 200;
+  const logoHeight = 100;
+  const logoX = (canvasSize - logoWidth) / 2;
+  const logoY = (canvasSize - logoHeight) / 2;
+  ctx.drawImage(foodImg, logoX, logoY, logoWidth, logoHeight);
+
+  // Vẽ con rắn
+  for (let i = 0; i < snake.length; i++) {
+    ctx.fillStyle = (i === 0) ? 'lightgreen' : 'green';
+    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    ctx.strokeStyle = 'darkgreen';
+    ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+  }
+
+  // Vẽ thức ăn bằng ảnh logo nhỏ
+  // Vẽ thức ăn khi ảnh đã load xong
+  if (foodImg.complete) {
+    ctx.drawImage(foodImg, food.x, food.y, box, box);
+  } else {
+    // Nếu ảnh chưa load xong thì vẽ hình vuông đỏ tạm
+    ctx.fillStyle = 'red';
+    ctx.fillRect(food.x, food.y, box, box);
+  }
+
+  // Phần còn lại của game...
+  // (di chuyển rắn, xử lý ăn thức ăn, điểm, ...)
+}
+
+// Lắng nghe phím điều hướng và các logic game...
+
+setInterval(draw, 150);
 
   // ... phần di chuyển snake ...
 }
@@ -90,4 +138,5 @@ function draw() {
 backgroundImage.onload = function() {
   game = setInterval(draw, 200);
 };
+
 
